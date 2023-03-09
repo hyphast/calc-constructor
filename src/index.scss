@@ -1,0 +1,6 @@
+@use './normalize';
+@use './variables' as *;
+
+body {
+  background: $background;
+}

@@ -1,0 +1,67 @@
+@use '../../variables' as *;
+
+.switchContainer {
+  background: #f3f4f6;
+  border-radius: 6px;
+  width: 242px;
+  height: 38px;
+
+  .switch {
+    display: inline-block;
+    transition: all 0.1s ease;
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    .switchLabel {
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      float: left;
+      width: 50%;
+      height: 100%;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 15px;
+      color: $gray;
+
+      svg {
+        margin: 0 11px 0 7px;
+      }
+
+      .activeMode {
+        path {
+          stroke: $blue;
+        }
+      }
+    }
+
+    .switchInput {
+      display: none;
+    }
+
+    .slider {
+      border-radius: 5px;
+      display: block;
+      position: absolute;
+      z-index: 1;
+      top: 0%;
+      left: 0%;
+      width: 50%;
+      height: 100%;
+      background: #ffffff;
+      border: 1px solid #e2e3e5;
+      -webkit-transition: left 0.35s ease;
+      -moz-transition: left 0.35s ease;
+      -ms-transition: left 0.35s ease;
+      -o-transition: left 0.35s ease;
+      transition: left 0.35s ease;
+    }
+
+    .sliderRight {
+      left: 50%;
+    }
+  }
+}

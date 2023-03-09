@@ -1,0 +1,27 @@
+@use '../../../variables' as *;
+
+.textBox {
+  width: 100%;
+  height: 52px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  border: none;
+  font-weight: 800;
+  font-size: 36px;
+  line-height: 44px;
+  padding: 4px 8px;
+
+  // caret-color: transparent;
+  text-align: right;
+
+  color: $black-strong;
+}
+
+.inputWidth {
+  font-size: 19px;
+  padding-top: 25px;
+}
+
+.notAllowed {
+  cursor: not-allowed;
+}

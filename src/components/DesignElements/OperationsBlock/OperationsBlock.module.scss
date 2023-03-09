@@ -1,0 +1,30 @@
+@use '../DesignElements.module.scss' as *;
+@use '../../../variables' as *;
+
+.operations {
+  width: 100%;
+  // cursor: move;
+
+  tr {
+    display: flex;
+    justify-content: space-between;
+
+    td {
+      width: 52px;
+      height: 48px;
+
+      button {
+        @include itemBtnStyles;
+
+        &:active {
+          background: $blue;
+          color: #ffffff;
+        }
+
+        &:disabled {
+          pointer-events: none;
+        }
+      }
+    }
+  }
+}

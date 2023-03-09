@@ -1,0 +1,18 @@
+.root {
+  width: 538px;
+  margin: 54px auto;
+
+  display: flex;
+
+  .sidebar {
+    padding-top: 67px;
+  }
+
+  .leftSide {
+    margin-left: 55px;
+
+    .modeSwitch {
+      margin-bottom: 30px;
+    }
+  }
+}

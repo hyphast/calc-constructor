@@ -1,0 +1,38 @@
+@use '../DesignElements.module.scss' as *;
+@use '../../../variables' as *;
+
+.numbers {
+  width: 100%;
+
+  tr {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+
+    & + tr {
+      margin-top: 7px;
+    }
+
+    td {
+      width: 72px;
+      height: 48px;
+
+      button {
+        @include itemBtnStyles;
+
+        &:active {
+          border: 2px solid $blue;
+          border-radius: 6px;
+        }
+
+        &:disabled {
+          pointer-events: none;
+        }
+      }
+
+      .zero {
+        width: 152px;
+      }
+    }
+  }
+}
