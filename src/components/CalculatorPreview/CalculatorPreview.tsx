@@ -48,7 +48,7 @@ export const CalculatorPreview = () => {
   )
 
   const onElementDoubleClick = (type: ElementType) => {
-    console.log('double cli')
+    if (isRuntime) return
 
     dispatch(removeElement(type))
   }
