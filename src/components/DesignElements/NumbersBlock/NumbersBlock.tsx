@@ -17,7 +17,7 @@ interface NumbersBlockProps extends DesignElementProps {
   movable: boolean
   isInactive: boolean
 }
-export type Ref = React.RefObject<HTMLDivElement>
+type Ref = React.RefObject<HTMLDivElement>
 export const NumbersBlock: FC<NumbersBlockProps> = React.forwardRef<
   Ref,
   NumbersBlockProps

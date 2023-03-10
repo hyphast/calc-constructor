@@ -10,7 +10,7 @@ interface EqualSignProps extends DesignElementProps {
   movable: boolean
   isInactive: boolean
 }
-export type Ref = React.RefObject<HTMLDivElement>
+type Ref = React.RefObject<HTMLDivElement>
 export const EqualSign: FC<EqualSignProps> = React.forwardRef<
   Ref,
   EqualSignProps

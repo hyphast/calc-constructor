@@ -13,7 +13,7 @@ interface OperationsBlockProps extends DesignElementProps {
   movable: boolean
   isInactive: boolean
 }
-export type Ref = React.RefObject<HTMLDivElement>
+type Ref = React.RefObject<HTMLDivElement>
 export const OperationsBlock: FC<OperationsBlockProps> = React.forwardRef<
   Ref,
   OperationsBlockProps

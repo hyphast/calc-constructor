@@ -12,7 +12,7 @@ interface TextBoxProps extends DesignElementProps {
   movable: boolean
   notAllowed: boolean
 }
-export type Ref = React.RefObject<HTMLDivElement>
+type Ref = React.RefObject<HTMLDivElement>
 export const TextBox: FC<TextBoxProps> = React.forwardRef<Ref, TextBoxProps>(
   ({ stage, isInactive, movable, notAllowed }, ref) => {
     const value = useSelector(selectCalculatorOperand)

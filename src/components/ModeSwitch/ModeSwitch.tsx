@@ -1,12 +1,12 @@
-import React, { useState, FC } from 'react'
 import cn from 'classnames'
+import { FC } from 'react'
 import { useSelector } from 'react-redux'
 import { ReactComponent as CodeBracketsLogo } from '../../assets/code-brackets.svg'
 import { ReactComponent as EyeLogo } from '../../assets/eye.svg'
 import { selectIsRuntime } from '../../store/app/selectors'
 import { setRuntime } from '../../store/app/slice'
-import { useAppDispatch } from '../../store/store'
 import { resetCalculator } from '../../store/calculator/slice'
+import { useAppDispatch } from '../../store/store'
 import styles from './ModeSwitch.module.scss'
 
 type ModeSwitchProps = {
