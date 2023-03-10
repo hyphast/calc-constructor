@@ -1,13 +1,13 @@
-export enum Operator {
-  PLUS,
-  MINUS,
-  DIVISION,
-  MULTIPLICATION,
-}
+export type Operator = '+' | '-' | 'x' | '/' | null
+
+export type CalcStage = 0 | 1 | 2
 
 export interface ICalculator {
-  firstOperand: number
-  secondOperand: number
+  firstOperand: string
+  secondOperand: string
   operator: Operator | null
-  result: number
+  result: number | null | 'Не определено'
+  meta: {
+    stage: CalcStage
+  }
 }

@@ -1,8 +1,7 @@
 import { RootState } from '../store'
 
-// export const selectPreviewItems = (state: RootState) => state.app.previewItems
+export const selectCalculatorOperand = (state: RootState) => {
+  const { firstOperand, secondOperand, meta, result } = state.calculator
 
-// export const selectIsElementInPreview = (state: RootState, elem: ElementType) =>
-//   state.app.previewItems.some((item) => elem === item)
-
-// export const selectIsRuntime = (state: RootState) => state.app.runtime
+  return result ? result : meta.stage === 2 ? secondOperand : firstOperand
+}

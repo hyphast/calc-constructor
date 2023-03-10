@@ -1,7 +1,6 @@
-import React, { ComponentType } from 'react'
-import { DragSourceMonitor, useDrag } from 'react-dnd'
-import { Stage } from '../components/DesignElements/DesignElements.types'
-import { ItemTypes } from '../hooks/types'
+import React from 'react'
+import { useDrag } from 'react-dnd'
+import { ItemTypes } from '../types/types'
 import { ElementType } from '../store/app/types'
 
 export function withAddDnD<T>(
@@ -12,8 +11,6 @@ export function withAddDnD<T>(
     const [{ isDragging }, drag] = useDrag(() => ({
       type: ItemTypes.ELEM,
       item: { elemType },
-      // canDrag: (item: Item) =>
-      //   !elementTypes.some((elem) => elem === item.elemType),
       collect: (monitor) => ({
         isDragging: !!monitor.isDragging(),
       }),

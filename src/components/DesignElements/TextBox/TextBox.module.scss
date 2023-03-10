@@ -9,9 +9,8 @@
   font-weight: 800;
   font-size: 36px;
   line-height: 44px;
-  padding: 4px 8px;
+  padding: 4px 2px;
 
-  // caret-color: transparent;
   text-align: right;
 
   color: $black-strong;
@@ -20,6 +19,11 @@
 .inputWidth {
   font-size: 19px;
   padding-top: 25px;
+}
+
+.NaN {
+  padding-top: 25px;
+  font-size: 25px;
 }
 
 .notAllowed {

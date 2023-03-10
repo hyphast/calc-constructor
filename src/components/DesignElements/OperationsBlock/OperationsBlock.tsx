@@ -1,15 +1,13 @@
-import React, { FC, useRef } from 'react'
 import cn from 'classnames'
-import { useDispatch } from 'react-redux'
-import type { Identifier, XYCoord } from 'dnd-core'
-import { useDrag, useDrop } from 'react-dnd'
-import { ElementType } from '../../../store/app/types'
+import React, { FC } from 'react'
+import { setOperator } from '../../../store/calculator/slice'
+import { Operator } from '../../../store/calculator/types'
+import { useAppDispatch } from '../../../store/store'
 import commonStyle from '../DesignElements.module.scss'
-import { useDragArgs } from '../../../hooks/useDragArgs'
-import { ItemTypes } from '../../../hooks/types'
-import { moveElements } from '../../../store/app/slice'
 import { DesignElementProps } from '../DesignElements.types'
 import styles from './OperationsBlock.module.scss'
+
+const operationsData: Operator[] = ['/', 'x', '-', '+']
 
 interface OperationsBlockProps extends DesignElementProps {
   movable: boolean
@@ -19,7 +17,13 @@ export type Ref = React.RefObject<HTMLDivElement>
 export const OperationsBlock: FC<OperationsBlockProps> = React.forwardRef<
   Ref,
   OperationsBlockProps
->(({ stage, movable: disabled, isInactive }, ref) => {
+>(({ movable: disabled, isInactive }, ref) => {
+  const dispatch = useAppDispatch()
+
+  const onOperationClick = (value: Operator) => {
+    dispatch(setOperator(value))
+  }
+
   return (
     <div
       draggable
@@ -32,26 +36,17 @@ export const OperationsBlock: FC<OperationsBlockProps> = React.forwardRef<
       <table className={styles.operations}>
         <tbody>
           <tr>
-            <td>
-              <button disabled={disabled} type="button">
-                /
-              </button>
-            </td>
-            <td>
-              <button disabled={disabled} type="button">
-                x
-              </button>
-            </td>
-            <td>
-              <button disabled={disabled} type="button">
-                -
-              </button>
-            </td>
-            <td>
-              <button disabled={disabled} type="button">
-                +
-              </button>
-            </td>
+            {operationsData.map((tdValue) => (
+              <td key={tdValue}>
+                <button
+                  onClick={() => onOperationClick(tdValue)}
+                  disabled={disabled}
+                  type="button"
+                >
+                  {tdValue}
+                </button>
+              </td>
+            ))}
           </tr>
         </tbody>
       </table>

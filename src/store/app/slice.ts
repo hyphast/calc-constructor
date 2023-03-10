@@ -14,10 +14,14 @@ const slice = createSlice({
       if (action.payload === ElementType.TEXT_BOX) {
         state.previewItems.unshift(action.payload)
       } else {
-        // state = { ...state, items: [...state.items, action.payload] }
         state.previewItems.push(action.payload)
       }
       return state
+    },
+    removeElement(state, action: PayloadAction<ElementType>) {
+      state.previewItems = state.previewItems.filter(
+        (item) => item !== action.payload
+      )
     },
     moveElements(state, action: PayloadAction<IMoveElements>) {
       const { dragIndex, hoverIndex } = action.payload
@@ -25,11 +29,6 @@ const slice = createSlice({
       const temp = state.previewItems[dragIndex]
       state.previewItems[dragIndex] = state.previewItems[hoverIndex]
       state.previewItems[hoverIndex] = temp
-
-      // const temp = state.previewItems[dragIndex]
-
-      // state.previewItems.splice(dragIndex, 1)
-      // state.previewItems.splice(hoverIndex, 0, temp)
     },
     setRuntime(state, action: PayloadAction<boolean>) {
       state.runtime = action.payload
@@ -37,6 +36,7 @@ const slice = createSlice({
   },
 })
 
-export const { addElement, moveElements, setRuntime } = slice.actions
+export const { addElement, removeElement, moveElements, setRuntime } =
+  slice.actions
 
 export default slice.reducer

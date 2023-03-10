@@ -4,7 +4,7 @@ import { useDrop } from 'react-dnd'
 import { useSelector } from 'react-redux'
 import AddNewElementIcon from '../../assets/add-new-element.svg'
 import { selectIsRuntime, selectPreviewItems } from '../../store/app/selectors'
-import { addElement } from '../../store/app/slice'
+import { addElement, removeElement } from '../../store/app/slice'
 import { ElementType } from '../../store/app/types'
 import {
   EqualSign,
@@ -13,10 +13,10 @@ import {
   TextBox,
 } from '../DesignElements'
 import { useAppDispatch } from '../../store/store'
-import { Item, ItemTypes } from '../../hooks/types'
+import { Item, ItemTypes } from '../../types/types'
 import { withMoveDnD } from '../../hoc/withMoveDnD'
-import styles from './CalculatorPreview.module.scss'
 import { withDisplayInfo } from '../../hoc/withDisplayInfo'
+import styles from './CalculatorPreview.module.scss'
 
 const calculatorElements = {
   [ElementType.TEXT_BOX]: TextBox,
@@ -47,6 +47,12 @@ export const CalculatorPreview = () => {
     [elementTypes]
   )
 
+  const onElementDoubleClick = (type: ElementType) => {
+    console.log('double cli')
+
+    dispatch(removeElement(type))
+  }
+
   return (
     <div
       ref={drop}
@@ -76,9 +82,9 @@ export const CalculatorPreview = () => {
             })
 
             return (
-              <React.Fragment key={type}>
+              <div onDoubleClick={() => onElementDoubleClick(type)} key={type}>
                 <Component stage={isRuntime ? 'active' : 'preview'} />
-              </React.Fragment>
+              </div>
             )
           })}
         </>

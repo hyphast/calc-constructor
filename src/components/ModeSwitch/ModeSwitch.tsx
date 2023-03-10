@@ -1,18 +1,28 @@
 import React, { useState, FC } from 'react'
 import cn from 'classnames'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { ReactComponent as CodeBracketsLogo } from '../../assets/code-brackets.svg'
 import { ReactComponent as EyeLogo } from '../../assets/eye.svg'
 import { selectIsRuntime } from '../../store/app/selectors'
-import styles from './ModeSwitch.module.scss'
 import { setRuntime } from '../../store/app/slice'
+import { useAppDispatch } from '../../store/store'
+import { resetCalculator } from '../../store/calculator/slice'
+import styles from './ModeSwitch.module.scss'
 
 type ModeSwitchProps = {
   className?: string
 }
 export const ModeSwitch: FC<ModeSwitchProps> = ({ className }) => {
   const isRuntime = useSelector(selectIsRuntime)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
+
+  const toggleOn = () => {
+    dispatch(setRuntime(true))
+  }
+  const toggleOff = () => {
+    dispatch(setRuntime(false))
+    dispatch(resetCalculator())
+  }
 
   return (
     <div className={cn(className, styles.switchContainer)}>
@@ -21,7 +31,7 @@ export const ModeSwitch: FC<ModeSwitchProps> = ({ className }) => {
           type="checkbox"
           className={styles.switchInput}
           id="runtime"
-          onClick={() => dispatch(setRuntime(true))}
+          onClick={toggleOn}
         />
         <label
           htmlFor="runtime"
@@ -34,7 +44,7 @@ export const ModeSwitch: FC<ModeSwitchProps> = ({ className }) => {
           type="checkbox"
           className={styles.switchInput}
           id="constructor"
-          onClick={() => dispatch(setRuntime(false))}
+          onClick={toggleOff}
         />
         <label
           htmlFor="constructor"

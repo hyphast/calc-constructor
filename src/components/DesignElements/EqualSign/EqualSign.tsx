@@ -1,13 +1,8 @@
-import React, { FC, useRef } from 'react'
 import cn from 'classnames'
-import type { Identifier, XYCoord } from 'dnd-core'
-import { useDispatch } from 'react-redux'
-import { useDrag, useDrop } from 'react-dnd'
-import { ElementType } from '../../../store/app/types'
+import React, { FC } from 'react'
+import { calculate } from '../../../store/calculator/slice'
+import { useAppDispatch } from '../../../store/store'
 import commonStyle from '../DesignElements.module.scss'
-import { useDragArgs } from '../../../hooks/useDragArgs'
-import { ItemTypes } from '../../../hooks/types'
-import { moveElements } from '../../../store/app/slice'
 import { DesignElementProps } from '../DesignElements.types'
 import styles from './EqualSign.module.scss'
 
@@ -19,7 +14,13 @@ export type Ref = React.RefObject<HTMLDivElement>
 export const EqualSign: FC<EqualSignProps> = React.forwardRef<
   Ref,
   EqualSignProps
->(({ stage, movable: disabled, isInactive }, ref) => {
+>(({ movable: disabled, isInactive }, ref) => {
+  const dispatch = useAppDispatch()
+
+  const onEqualClick = () => {
+    dispatch(calculate())
+  }
+
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
@@ -28,7 +29,12 @@ export const EqualSign: FC<EqualSignProps> = React.forwardRef<
         [commonStyle.inactive]: isInactive,
       })}
     >
-      <button disabled={disabled} className={styles.equalSign} type="button">
+      <button
+        onClick={onEqualClick}
+        disabled={disabled}
+        className={styles.equalSign}
+        type="button"
+      >
         =
       </button>
     </div>

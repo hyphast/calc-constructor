@@ -1,17 +1,16 @@
-import React, { FC } from 'react'
 import cn from 'classnames'
-import { compose } from '@reduxjs/toolkit'
+import { FC } from 'react'
 import { useSelector } from 'react-redux'
+import { withAddDnD } from '../../hoc/withAddDnd'
+import { withDisplayInfo } from '../../hoc/withDisplayInfo'
+import { selectIsRuntime } from '../../store/app/selectors'
+import { ElementType } from '../../store/app/types'
 import {
   EqualSign,
   NumbersBlock,
   OperationsBlock,
   TextBox,
 } from '../DesignElements'
-import { withAddDnD } from '../../hoc/withAddDnd'
-import { ElementType } from '../../store/app/types'
-import { withDisplayInfo } from '../../hoc/withDisplayInfo'
-import { selectIsRuntime } from '../../store/app/selectors'
 import styles from './DesignSidebar.module.scss'
 
 type DesignSidebarProps = {

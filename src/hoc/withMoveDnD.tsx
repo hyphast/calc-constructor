@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react'
 import type { Identifier, XYCoord } from 'dnd-core'
-import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd'
-import { useDispatch, useSelector } from 'react-redux'
-import { ItemTypes } from '../hooks/types'
+import React, { useRef } from 'react'
+import { useDrag, useDrop } from 'react-dnd'
+import { useSelector } from 'react-redux'
+import { ItemTypes } from '../types/types'
+import { selectIsRuntime, selectPreviewItems } from '../store/app/selectors'
 import { moveElements } from '../store/app/slice'
-import { useDragArgs } from '../hooks/useDragArgs'
 import { ElementType } from '../store/app/types'
-import { selectPreviewItems } from '../store/app/selectors'
+import { useAppDispatch } from '../store/store'
 
 interface WithMoveDnDProps {
   index: number
@@ -19,15 +19,15 @@ export function withMoveDnD<T>(
   const { index, elemType } = hocProps
 
   return (props: Omit<T, 'data-handler-id'>) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const ref = useRef<HTMLDivElement | null>(null)
     const elementTypes = useSelector(selectPreviewItems)
+    const isRuntime = useSelector(selectIsRuntime)
 
-    // const dragArgs = useDragArgs(ElementType.TEXT_BOX, index)
     const [{ isDragging }, drag] = useDrag(() => ({
       type: ItemTypes.MOVE,
       item: { index, elemType },
-      canDrag: () => elemType !== ElementType.TEXT_BOX,
+      canDrag: () => elemType !== ElementType.TEXT_BOX && !isRuntime,
       collect: (monitor) => ({
         isDragging: !!monitor.isDragging(),
       }),
@@ -45,10 +45,8 @@ export function withMoveDnD<T>(
           isOver: monitor.isOver(),
         }
       },
+      canDrop: () => !isRuntime,
       hover(item: WithMoveDnDProps, monitor) {
-        // if (!elementTypes.some((elem) => elem === item.elemType)) {
-        //   return
-        // }
         if (!ref.current) {
           return
         }
