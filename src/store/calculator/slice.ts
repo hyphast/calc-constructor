@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ICalculator, Operator } from './types'
+import { ICalculator, Operand, Operator } from './types'
 
 const initialState: ICalculator = {
   firstOperand: '0',
@@ -15,7 +15,7 @@ const slice = createSlice({
   name: 'calculator',
   initialState,
   reducers: {
-    setOperand(state, action: PayloadAction<string>) {
+    setOperand(state, action: PayloadAction<Operand>) {
       const char = action.payload
       const stage = state.meta.stage
 
@@ -25,11 +25,13 @@ const slice = createSlice({
 
       if (stage === 1) state.meta.stage = 2
 
-      if (operand.length > 16) return
-
-      if (char === ',' && operand.includes(',')) return
-
-      if (operand === '0' && char === '0' && !state.result) return
+      if (
+        operand.length > 16 ||
+        (char === ',' && operand.includes(',')) ||
+        (operand === '0' && char === '0' && !state.result)
+      ) {
+        return
+      }
 
       if (state.result) state.result = null
 
@@ -40,14 +42,6 @@ const slice = createSlice({
       }
     },
     setOperator(state, action: PayloadAction<Operator>) {
-      const stage = state.meta.stage
-
-      if (stage === 2) {
-        const result = state.firstOperand
-        state.firstOperand = result
-        state.meta.stage = 0
-      }
-
       state.operator = action.payload
       state.meta.stage = 1
     },

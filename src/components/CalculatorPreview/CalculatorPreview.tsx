@@ -1,21 +1,21 @@
-import React from 'react'
+import React, { FC, useRef } from 'react'
 import cn from 'classnames'
 import { useDrop } from 'react-dnd'
 import { useSelector } from 'react-redux'
 import AddNewElementIcon from '../../assets/add-new-element.svg'
+import { withDisplayInfo } from '../../hoc/withDisplayInfo'
+import { withMovable } from '../../hoc/withMovable'
 import { selectIsRuntime, selectPreviewItems } from '../../store/app/selectors'
-import { addElement, removeElement } from '../../store/app/slice'
+import { moveElements, removeElement } from '../../store/app/slice'
 import { ElementType } from '../../store/app/types'
+import { useAppDispatch } from '../../store/store'
+import { Item, ItemTypes } from '../../types/types'
 import {
   EqualSign,
   NumbersBlock,
   OperationsBlock,
   TextBox,
 } from '../DesignElements'
-import { useAppDispatch } from '../../store/store'
-import { Item, ItemTypes } from '../../types/types'
-import { withMoveDnD } from '../../hoc/withMoveDnD'
-import { withDisplayInfo } from '../../hoc/withDisplayInfo'
 import styles from './CalculatorPreview.module.scss'
 
 const calculatorElements = {
@@ -25,26 +25,31 @@ const calculatorElements = {
   [ElementType.EQUAL]: EqualSign,
 }
 
-export const CalculatorPreview = () => {
+export const CalculatorPreview: FC = () => {
   const dispatch = useAppDispatch()
-  const elementTypes = useSelector(selectPreviewItems)
+  const previewItems = useSelector(selectPreviewItems)
   const isRuntime = useSelector(selectIsRuntime)
-  const itemsNumber = elementTypes.length
+  const itemsNumber = previewItems.length
+  const refDrop = useRef<HTMLDivElement>(null)
 
-  const [{ isOver, canDrop }, drop] = useDrop(
+  const [, drop] = useDrop(
     () => ({
-      accept: ItemTypes.ELEM,
+      accept: ItemTypes.MOVE,
       canDrop: (item: Item) =>
-        !elementTypes.some((elem) => elem === item.elemType), // TODO selector
-      drop: (item: Item) => {
-        dispatch(addElement(item.elemType))
+        !previewItems.some((elem) => elem === item.elemType),
+      drop: (item, monitor) => {
+        if (!refDrop.current || !monitor.isOver({ shallow: true })) return
+
+        dispatch(
+          moveElements({
+            dragIndex: itemsNumber,
+            hoverIndex: itemsNumber,
+            dragElemType: item.elemType,
+          })
+        )
       },
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver(),
-        canDrop: !!monitor.canDrop(),
-      }),
     }),
-    [elementTypes]
+    [previewItems, itemsNumber]
   )
 
   const onElementDoubleClick = (type: ElementType) => {
@@ -53,11 +58,13 @@ export const CalculatorPreview = () => {
     dispatch(removeElement(type))
   }
 
+  drop(refDrop)
+
   return (
     <div
-      ref={drop}
+      ref={refDrop}
       className={cn(styles.root, {
-        [styles.preview]: itemsNumber || (!itemsNumber && isRuntime),
+        [styles.layout]: itemsNumber || (!itemsNumber && isRuntime),
       })}
     >
       {!itemsNumber && !isRuntime ? (
@@ -72,11 +79,11 @@ export const CalculatorPreview = () => {
         </>
       ) : (
         <>
-          {Object.values(elementTypes).map((type, index) => {
+          {Object.values(previewItems).map((type, index) => {
             const ComponentWithDisplayInfo = withDisplayInfo(
               calculatorElements[type] as React.FC<any>
             )
-            const Component = withMoveDnD(ComponentWithDisplayInfo, {
+            const Component = withMovable(ComponentWithDisplayInfo, {
               index,
               elemType: type,
             })

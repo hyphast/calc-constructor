@@ -1,3 +1,5 @@
+@use '../../variables' as *;
+
 .elementContainer {
   width: 240px;
   height: fit-content;
@@ -5,6 +7,7 @@
   background: #ffffff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.06), 0px 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+  position: relative;
 }
 
 @mixin itemBtnStyles {
@@ -28,4 +31,34 @@
 
 .inactive {
   opacity: 0.5;
+}
+
+.dropzone {
+  position: absolute;
+  top: -7px;
+  left: -9px;
+  width: 108%;
+
+  hr {
+    border-top: 1px solid $blue;
+
+    &::after,
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      transform: rotate(45deg);
+      background: $blue;
+      position: absolute;
+      top: -2px;
+    }
+
+    &::before {
+      left: 0;
+    }
+    &::after {
+      right: 0;
+    }
+  }
 }

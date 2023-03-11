@@ -1,18 +1,13 @@
-import cn from 'classnames'
 import React, { FC } from 'react'
+import cn from 'classnames'
 import { NumericFormat } from 'react-number-format'
 import { useSelector } from 'react-redux'
 import { selectCalculatorOperand } from '../../../store/calculator/selectors'
+import { DesignElementProps, Ref } from '../DesignElements.types'
 import commonStyle from '../DesignElements.module.scss'
-import { DesignElementProps } from '../DesignElements.types'
 import styles from './TextBox.module.scss'
 
-interface TextBoxProps extends DesignElementProps {
-  isInactive: boolean
-  movable: boolean
-  notAllowed: boolean
-}
-type Ref = React.RefObject<HTMLDivElement>
+interface TextBoxProps extends DesignElementProps {}
 export const TextBox: FC<TextBoxProps> = React.forwardRef<Ref, TextBoxProps>(
   ({ stage, isInactive, movable, notAllowed }, ref) => {
     const value = useSelector(selectCalculatorOperand)

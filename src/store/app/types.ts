@@ -11,6 +11,7 @@ export interface IApp {
 }
 
 export interface IMoveElements {
-  dragIndex: number
+  dragIndex: number | null
   hoverIndex: number
+  dragElemType: ElementType
 }

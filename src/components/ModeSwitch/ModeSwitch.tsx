@@ -1,5 +1,5 @@
-import cn from 'classnames'
 import { FC } from 'react'
+import cn from 'classnames'
 import { useSelector } from 'react-redux'
 import { ReactComponent as CodeBracketsLogo } from '../../assets/code-brackets.svg'
 import { ReactComponent as EyeLogo } from '../../assets/eye.svg'

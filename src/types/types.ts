@@ -10,11 +10,3 @@ export type Item = {
   elemType: ElementType
   index: number
 }
-
-export type UseDragArgsReturn = {
-  type: string
-  item: Item
-  collect: (monitor: DragSourceMonitor<Item, unknown>) => {
-    isDragging: boolean
-  }
-}

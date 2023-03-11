@@ -10,25 +10,27 @@ const slice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    addElement(state, action: PayloadAction<ElementType>) {
-      if (action.payload === ElementType.TEXT_BOX) {
-        state.previewItems.unshift(action.payload)
-      } else {
-        state.previewItems.push(action.payload)
-      }
-      return state
-    },
     removeElement(state, action: PayloadAction<ElementType>) {
       state.previewItems = state.previewItems.filter(
         (item) => item !== action.payload
       )
     },
     moveElements(state, action: PayloadAction<IMoveElements>) {
-      const { dragIndex, hoverIndex } = action.payload
+      const { dragIndex, hoverIndex, dragElemType } = action.payload
 
-      const temp = state.previewItems[dragIndex]
-      state.previewItems[dragIndex] = state.previewItems[hoverIndex]
-      state.previewItems[hoverIndex] = temp
+      const elementInPreview = state.previewItems.find(
+        (item) => item === dragElemType
+      )
+
+      if (dragElemType === ElementType.TEXT_BOX && !elementInPreview) {
+        state.previewItems.unshift(dragElemType)
+        return
+      }
+
+      if (elementInPreview && dragIndex) {
+        state.previewItems.splice(dragIndex, 1)
+      }
+      state.previewItems.splice(hoverIndex, 0, dragElemType)
     },
     setRuntime(state, action: PayloadAction<boolean>) {
       state.runtime = action.payload
@@ -36,7 +38,6 @@ const slice = createSlice({
   },
 })
 
-export const { addElement, removeElement, moveElements, setRuntime } =
-  slice.actions
+export const { removeElement, moveElements, setRuntime } = slice.actions
 
 export default slice.reducer

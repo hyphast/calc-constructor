@@ -1,38 +1,35 @@
-import cn from 'classnames'
 import React, { FC } from 'react'
-import { setOperator } from '../../../store/calculator/slice'
+import cn from 'classnames'
+import { setOperatorWithCalculation } from '../../../store/calculator/asyncActions'
 import { Operator } from '../../../store/calculator/types'
 import { useAppDispatch } from '../../../store/store'
+import { DesignElementProps, Ref } from '../DesignElements.types'
+import { Dropzone } from '../Dropzone'
 import commonStyle from '../DesignElements.module.scss'
-import { DesignElementProps } from '../DesignElements.types'
 import styles from './OperationsBlock.module.scss'
 
 const operationsData: Operator[] = ['/', 'x', '-', '+']
 
-interface OperationsBlockProps extends DesignElementProps {
-  movable: boolean
-  isInactive: boolean
-}
-type Ref = React.RefObject<HTMLDivElement>
+interface OperationsBlockProps extends DesignElementProps {}
 export const OperationsBlock: FC<OperationsBlockProps> = React.forwardRef<
   Ref,
   OperationsBlockProps
->(({ movable: disabled, isInactive }, ref) => {
+>(({ movable: disabled, isInactive, isOver }, ref) => {
   const dispatch = useAppDispatch()
 
   const onOperationClick = (value: Operator) => {
-    dispatch(setOperator(value))
+    dispatch(setOperatorWithCalculation(value))
   }
 
   return (
     <div
-      draggable
       ref={ref as React.RefObject<HTMLDivElement>}
       className={cn(commonStyle.elementContainer, {
         [commonStyle.movable]: disabled,
         [commonStyle.inactive]: isInactive,
       })}
     >
+      <Dropzone isOver={isOver} />
       <table className={styles.operations}>
         <tbody>
           <tr>

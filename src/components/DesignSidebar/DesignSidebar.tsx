@@ -1,7 +1,7 @@
-import cn from 'classnames'
 import { FC } from 'react'
+import cn from 'classnames'
 import { useSelector } from 'react-redux'
-import { withAddDnD } from '../../hoc/withAddDnd'
+import { withDraggable } from '../../hoc/withDraggable'
 import { withDisplayInfo } from '../../hoc/withDisplayInfo'
 import { selectIsRuntime } from '../../store/app/selectors'
 import { ElementType } from '../../store/app/types'
@@ -17,19 +17,19 @@ type DesignSidebarProps = {
   className?: string
 }
 
-const TextBoxWithDnD = withAddDnD(
+const TextBoxWithDnD = withDraggable(
   withDisplayInfo(TextBox),
   ElementType.TEXT_BOX
 )
-const OperationsBlockWithDnD = withAddDnD(
+const OperationsBlockWithDnD = withDraggable(
   withDisplayInfo(OperationsBlock),
   ElementType.OPERATIONS
 )
-const NumbersBlockWithDnD = withAddDnD(
+const NumbersBlockWithDnD = withDraggable(
   withDisplayInfo(NumbersBlock),
   ElementType.NUMBERS
 )
-const EqualSignWithDnD = withAddDnD(
+const EqualSignWithDnD = withDraggable(
   withDisplayInfo(EqualSign),
   ElementType.EQUAL
 )
