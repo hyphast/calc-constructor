@@ -26,20 +26,22 @@ const slice = createSlice({
       if (stage === 1) state.meta.stage = 2
 
       if (
-        operand.length > 16 ||
+        operand.length > 15 ||
         (char === ',' && operand.includes(',')) ||
         (operand === '0' && char === '0' && !state.result)
       ) {
         return
       }
 
-      if (state.result) state.result = null
-
       if (operand === '0' && char !== ',') {
         state[operandName] = char
+      } else if (operand === '0' && char === ',' && state.result) {
+        state[operandName] = operand + char
       } else {
         state[operandName] += char
       }
+
+      if (state.result) state.result = null
     },
     setOperator(state, action: PayloadAction<Operator>) {
       state.operator = action.payload
@@ -76,9 +78,19 @@ const slice = createSlice({
         state.result = 'Не определено'
         state.firstOperand = '0'
       } else {
-        const fixedNum = result.toFixed(15).replace(',', '.') // maybe loss of precision
-        state.result = parseFloat(fixedNum)
-        state.firstOperand = String(result).replace('.', ',')
+        let fixedNum = result.toFixed(15) // maybe loss of precision
+
+        if (fixedNum.includes('e')) {
+          fixedNum = parseFloat(fixedNum).toExponential(12)
+        }
+
+        const resultWithoutTrailingZeros = String(parseFloat(fixedNum)).replace(
+          '.',
+          ','
+        )
+
+        state.result = resultWithoutTrailingZeros
+        state.firstOperand = resultWithoutTrailingZeros
       }
 
       state.meta.stage = 0

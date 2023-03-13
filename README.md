@@ -36,7 +36,7 @@ The Calculator Constructor App has two different modes:
 
 - `Active mode`: This is the mode, where you can perform basic mathematical operations such as addition, subtraction, multiplication, and division.
 
-- `Constructor mode`: This is the default mode of the calculator, where you can create a custom calculator by selecting and arranging different components. In constructor mode, you can choose from various elements and combine them to create a calculator.
+- `Constructor mode`: This is the default mode of the calculator, where you can create a custom calculator by selecting and arranging different components. In constructor mode, you can choose from various elements and combine them to create a calculator. To delete a component, double-click on it.
 
 To switch between the active mode and the constructor mode, click on the "Runtime" or "Constructor" button located at the top of the screen. Your current calculation or calculator design will be saved automatically when you switch between modes.
 

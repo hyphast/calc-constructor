@@ -19,7 +19,7 @@ export interface ICalculator {
   firstOperand: string
   secondOperand: string
   operator: Operator | null
-  result: number | null | 'Не определено'
+  result: string | null | 'Не определено'
   meta: {
     stage: CalcStage
   }

@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import cn from 'classnames'
-import { NumericFormat } from 'react-number-format'
 import { useSelector } from 'react-redux'
 import { selectCalculatorOperand } from '../../../store/calculator/selectors'
 import { DesignElementProps, Ref } from '../DesignElements.types'
@@ -9,7 +8,7 @@ import styles from './TextBox.module.scss'
 
 interface TextBoxProps extends DesignElementProps {}
 export const TextBox: FC<TextBoxProps> = React.forwardRef<Ref, TextBoxProps>(
-  ({ stage, isInactive, movable, notAllowed }, ref) => {
+  ({ isInactive, movable, notAllowed }, ref) => {
     const value = useSelector(selectCalculatorOperand)
 
     return (
@@ -24,23 +23,20 @@ export const TextBox: FC<TextBoxProps> = React.forwardRef<Ref, TextBoxProps>(
         {value === 'Не определено' ? (
           <input
             disabled
-            className={cn(styles.textBox, styles.NaN)}
-            defaultValue={value}
             type="text"
+            value={value || ''}
+            className={cn(styles.textBox, styles.NaN)}
           />
         ) : (
-          <NumericFormat
+          <input
             disabled
-            value={value}
+            type="text"
+            value={value || ''}
             className={cn(styles.textBox, {
               [commonStyle.movable]: movable,
               [styles.notAllowed]: notAllowed,
-              [styles.inputWidth]: String(value).length > 8,
+              [styles.inputWidth]: value.length > 8,
             })}
-            isAllowed={() => stage === 'active'}
-            thousandSeparator=" "
-            decimalScale={16}
-            decimalSeparator=","
           />
         )}
       </div>
