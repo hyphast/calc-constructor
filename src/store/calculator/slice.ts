@@ -1,4 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import {
+  getCalculationResult,
+  getNextChar,
+  isResultCorrect,
+  shouldSkipUpdate,
+  toFormattedString,
+} from './service'
 import { ICalculator, Operand, Operator } from './types'
 
 const initialState: ICalculator = {
@@ -25,21 +32,19 @@ const slice = createSlice({
 
       if (stage === 1) state.meta.stage = 2
 
-      if (
-        operand.length > 15 ||
-        (char === ',' && operand.includes(',')) ||
-        (operand === '0' && char === '0' && !state.result)
-      ) {
-        return
+      if (shouldSkipUpdate({ operand, char, result: state.result })) {
+        return state
       }
 
-      if (operand === '0' && char !== ',') {
-        state[operandName] = char
-      } else if (operand === '0' && char === ',' && state.result) {
-        state[operandName] = operand + char
-      } else {
-        state[operandName] += char
-      }
+      const currentOperand = state[operandName]
+      const nextChar = getNextChar({
+        operand,
+        char,
+        result: state.result,
+        currentOperand,
+      })
+
+      state[operandName] = nextChar
 
       if (state.result) state.result = null
     },
@@ -50,47 +55,22 @@ const slice = createSlice({
     calculate(state) {
       const stage = state.meta.stage
 
-      if (stage === 0) return
+      if (stage === 0) return state
 
-      let firstOperand = parseFloat(state.firstOperand.replace(',', '.'))
-      let secondOperand = parseFloat(state.secondOperand.replace(',', '.'))
-      if (stage === 1) secondOperand = firstOperand
+      let result = getCalculationResult(
+        state.firstOperand,
+        stage === 1 ? state.firstOperand : state.secondOperand,
+        state.operator
+      )
 
-      let result
-      switch (state.operator) {
-        case '+':
-          result = firstOperand + secondOperand
-          break
-        case '-':
-          result = firstOperand - secondOperand
-          break
-        case 'x':
-          result = firstOperand * secondOperand
-          break
-        case '/':
-          result = firstOperand / secondOperand
-          break
-        default:
-          return state
-      }
-
-      if (!Number.isFinite(result)) {
+      if (!isResultCorrect(result)) {
         state.result = 'Не определено'
         state.firstOperand = '0'
       } else {
-        let fixedNum = result.toFixed(15) // maybe loss of precision
+        const formattedResult = toFormattedString(result)
 
-        if (fixedNum.includes('e')) {
-          fixedNum = parseFloat(fixedNum).toExponential(12)
-        }
-
-        const resultWithoutTrailingZeros = String(parseFloat(fixedNum)).replace(
-          '.',
-          ','
-        )
-
-        state.result = resultWithoutTrailingZeros
-        state.firstOperand = resultWithoutTrailingZeros
+        state.result = formattedResult
+        state.firstOperand = formattedResult
       }
 
       state.meta.stage = 0

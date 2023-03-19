@@ -8,7 +8,7 @@ import styles from './TextBox.module.scss'
 
 interface TextBoxProps extends DesignElementProps {}
 export const TextBox: FC<TextBoxProps> = React.forwardRef<Ref, TextBoxProps>(
-  ({ isInactive, movable, notAllowed }, ref) => {
+  ({ stage, isInactive, movable, notAllowed }, ref) => {
     const value = useSelector(selectCalculatorOperand)
 
     return (
@@ -18,27 +18,20 @@ export const TextBox: FC<TextBoxProps> = React.forwardRef<Ref, TextBoxProps>(
           [commonStyle.movable]: movable,
           [styles.notAllowed]: notAllowed,
           [commonStyle.inactive]: isInactive,
+          [commonStyle.designElement]: stage === 'design',
         })}
       >
-        {value === 'Не определено' ? (
-          <input
-            disabled
-            type="text"
-            value={value || ''}
-            className={cn(styles.textBox, styles.NaN)}
-          />
-        ) : (
-          <input
-            disabled
-            type="text"
-            value={value || ''}
-            className={cn(styles.textBox, {
-              [commonStyle.movable]: movable,
-              [styles.notAllowed]: notAllowed,
-              [styles.inputWidth]: value.length > 8,
-            })}
-          />
-        )}
+        <input
+          disabled
+          type="text"
+          value={value || ''}
+          className={cn(styles.textBox, {
+            [commonStyle.movable]: movable,
+            [styles.notAllowed]: notAllowed,
+            [styles.inputWidth]: value.length > 8,
+            [styles.NaN]: value === 'Не определено',
+          })}
+        />
       </div>
     )
   }

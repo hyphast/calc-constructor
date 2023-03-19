@@ -14,7 +14,7 @@ interface OperationsBlockProps extends DesignElementProps {}
 export const OperationsBlock: FC<OperationsBlockProps> = React.forwardRef<
   Ref,
   OperationsBlockProps
->(({ movable: disabled, isInactive, isOver }, ref) => {
+>(({ stage, movable: disabled, isInactive, isOver }, ref) => {
   const dispatch = useAppDispatch()
 
   const onOperationClick = (value: Operator) => {
@@ -27,6 +27,7 @@ export const OperationsBlock: FC<OperationsBlockProps> = React.forwardRef<
       className={cn(commonStyle.elementContainer, {
         [commonStyle.movable]: disabled,
         [commonStyle.inactive]: isInactive,
+        [commonStyle.designElement]: stage === 'design',
       })}
     >
       <Dropzone isOver={isOver} />
